@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Drawing;
 using OOP_lab1.Structs;
 using OOP_lab1.Extentions;
 using OOP_lab1.Shapes;
 using OOP_lab1.Collections;
 using Rectangle = OOP_lab1.Shapes.Rectangle;
+using Point = OOP_lab1.Structs.Point;
+using OOP_lab1.Factory;
+using OOP_lab1.Enums;
+using System;
 
 namespace OOP_lab1
 {
@@ -26,31 +21,63 @@ namespace OOP_lab1
     /// </summary>
     public partial class MainWindow : Window 
     {
+        private Button _activeBtn;
         private WriteableBitmap _bitmap;
+        private Point _rigthPoint, _leftPoint;
         public MainWindow()
         {
             InitializeComponent();
+
+            foreach(var item in Enum.GetValues<ShapesEnum>())
+            {
+                Button btn = new()
+                {
+                    Margin = new Thickness(4),
+                    Content = item,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Width = 60,
+                    Tag = item
+                };
+                btn.Click += Button_Click_1;
+                toolPanel.Children.Add(btn);
+            }
+
             _bitmap = new(800, 388, 96, 96, PixelFormats.Bgr32, null);
             Palette.Source = _bitmap;
-            Button_Click(null, null);
+            PreviewKeyDown += new KeyEventHandler(HandleEsc);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void HandleEsc(object sender, KeyEventArgs e)
         {
-            ShapesList shapes = new ShapesList()
+            if (e.Key == Key.Escape)
             {
-                new Rectangle(120, 80, 160, 100) { Color = PixelColors.Blue },
-                new Elipse(150, 300, 250, 100),
-                new Heart(650, 100, 80) { LineWidth = 6},
-                new Square(400, 100, 50) { Color = PixelColors.Green},
-                new Triangle(470, 20, 470, 200, 600, 300) {Color = PixelColors.Blue },
-                new Circle(400,180,60)
-            };
-
-            foreach (var shape in shapes)
-            {
-                _bitmap.DrawShape(shape);
+                _activeBtn.IsEnabled = true;
+                _activeBtn = null;
             }
+        }
+
+        private void Palette_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if(_activeBtn == null)
+                return;
+            else if (_leftPoint == null)
+                _leftPoint = new Point(e.GetPosition(Palette));
+            else
+            {
+                _rigthPoint = new Point(e.GetPosition(Palette));
+                BaseShape shape = ShapeFactory.Build((ShapesEnum)_activeBtn.Tag, _rigthPoint, _leftPoint);
+                shape.ColorOutline = new PixelColor(colorBox.Text);
+                _bitmap.DrawShape(shape);
+                _rigthPoint = _leftPoint = null;
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            if (_activeBtn != null) _activeBtn.IsEnabled = true;
+            _activeBtn = button;
+            _activeBtn.IsEnabled = false;            
         }
     }
 }
