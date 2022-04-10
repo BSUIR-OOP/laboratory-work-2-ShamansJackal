@@ -1,4 +1,6 @@
-﻿namespace OOP_lab1.Structs
+﻿using System;
+
+namespace OOP_lab1.Structs
 {
     public struct PixelColor
     {
@@ -13,8 +15,18 @@
         {
             this.red = red;
             this.green = green;
-            this.blue = blue;  
+            this.blue = blue;
             this.alpha = alpha;
+        }
+
+        public PixelColor(string hex)
+        {
+            if (hex.Length != 6) throw new Exception();
+
+            red = byte.Parse(hex[0..2], System.Globalization.NumberStyles.HexNumber);
+            green = byte.Parse(hex[2..4], System.Globalization.NumberStyles.HexNumber);
+            blue = byte.Parse(hex[4..6], System.Globalization.NumberStyles.HexNumber);
+            alpha = 255;
         }
     }
 

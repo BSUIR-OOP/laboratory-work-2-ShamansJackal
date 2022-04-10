@@ -17,6 +17,12 @@ namespace OOP_lab1.Structs
             Y = y;
         }
 
+        public Point(System.Windows.Point point)
+        {
+            X = point.X; 
+            Y = point.Y;
+        }
+
         public Point ToInt() => new Point((int)X, (int)Y);
 
         public static Point operator +(Point a, Point b) => new(a.X + b.X, a.Y + b.Y);
