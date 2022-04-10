@@ -11,7 +11,7 @@ namespace OOP_lab1.Shapes
         private const double h_ration = 0.87;
         public Heart(int x, int y, int size)
         {
-            Color = PixelColors.Red;
+            ColorOutline = PixelColors.Red;
             _curves = new List<BezierCurve>
             {
                 new BezierCurve(new Point(x-size*h_ration,y), new Point(x,y+size)),

@@ -33,7 +33,7 @@ namespace OOP_lab1.Extentions
                 for(double i = 0; i < 1; i += 0.005)
                 {
                     Point point = curve.Draw(i);
-                    wb.AddRect(shape.Color, (int)point.X, (int)point.Y, shape.LineWidth);
+                    wb.AddRect(shape.ColorOutline, (int)point.X, (int)point.Y, shape.LineWidth);
                 }
             }
         }

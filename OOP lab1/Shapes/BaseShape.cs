@@ -6,7 +6,7 @@ namespace OOP_lab1.Shapes
     public abstract class BaseShape
     {
         private int _lineWidth = 1;
-        public PixelColor Color = PixelColors.White;
+        public PixelColor ColorOutline = PixelColors.White;
         public int LineWidth
         {
             get => _lineWidth;
