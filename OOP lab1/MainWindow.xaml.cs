@@ -3,16 +3,14 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Drawing;
 using OOP_lab1.Structs;
 using OOP_lab1.Extentions;
 using OOP_lab1.Shapes;
-using OOP_lab1.Collections;
-using Rectangle = OOP_lab1.Shapes.Rectangle;
 using Point = OOP_lab1.Structs.Point;
 using OOP_lab1.Factory;
-using OOP_lab1.Enums;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OOP_lab1
 {
@@ -28,12 +26,14 @@ namespace OOP_lab1
         {
             InitializeComponent();
 
-            foreach(var item in Enum.GetValues<ShapesEnum>())
+            IEnumerable<Type> shapesTypes = typeof(BaseShape).Assembly.ExportedTypes.Where(t => typeof(BaseShape).IsAssignableFrom(t) && t != typeof(BaseShape));
+
+            foreach (var item in shapesTypes)
             {
                 Button btn = new()
                 {
                     Margin = new Thickness(4),
-                    Content = item,
+                    Content = item.Name,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     Width = 60,
                     Tag = item
@@ -66,7 +66,7 @@ namespace OOP_lab1
             {
                 _rigthPoint = new Point(e.GetPosition(Palette));
 
-                BaseShape shape = ShapeFactory.Build((ShapesEnum)_activeBtn.Tag, _rigthPoint, _leftPoint);
+                BaseShape shape = ShapeFactory.Build((Type)_activeBtn.Tag, _rigthPoint, _leftPoint);
                 shape.ColorOutline = new PixelColor(colorBox.Text);
                 shape.LineWidth = int.Parse(widthBox.Text);
 

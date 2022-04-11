@@ -1,5 +1,4 @@
-﻿using OOP_lab1.Enums;
-using OOP_lab1.Shapes;
+﻿using OOP_lab1.Shapes;
 using OOP_lab1.Structs;
 using System;
 using System.Collections.Generic;
@@ -12,21 +11,18 @@ namespace OOP_lab1.Factory
 {
     public static class ShapeFactory
     {
-        private static Dictionary<ShapesEnum, ConstructorInfo?> _shapesDict = new Dictionary<ShapesEnum, ConstructorInfo?>()
+        private static Dictionary<Type, ConstructorInfo> _cache = new Dictionary<Type, ConstructorInfo>();
+        public static BaseShape Build(Type shapeType, Point point1, Point point2)
         {
-            { ShapesEnum.Circle, typeof(Circle).GetConstructor(new[] { typeof(Point), typeof(Point) }) },
-            { ShapesEnum.Rectangle, typeof(Rectangle).GetConstructor(new[] { typeof(Point), typeof(Point) }) },
-            { ShapesEnum.Triangle, typeof(Triangle).GetConstructor(new[] { typeof(Point), typeof(Point) }) },
-            { ShapesEnum.Squart, typeof(Square).GetConstructor(new[] { typeof(Point), typeof(Point) }) },
-            { ShapesEnum.Elipse, typeof(Elipse).GetConstructor(new[] { typeof(Point), typeof(Point) }) },
-            { ShapesEnum.Heart, typeof(Heart).GetConstructor(new[] { typeof(Point), typeof(Point) }) },
-            { ShapesEnum.Line, typeof(Line).GetConstructor(new[] { typeof(Point), typeof(Point) }) },
-        };
-        public static BaseShape Build(ShapesEnum shapeType, Point point1, Point point2)
-        {         
-            ConstructorInfo? ctor = _shapesDict[shapeType];
-            
+            if(_cache.TryGetValue(shapeType, out ConstructorInfo ctorCached)){
+                return (BaseShape)ctorCached.Invoke(new object[] { point1, point2 });
+            }
+
+            if(!shapeType.IsAssignableTo(typeof(BaseShape))) throw new Exception($"{shapeType} is'n {typeof(BaseShape)}");
+            ConstructorInfo? ctor = shapeType.GetConstructor(new[] { typeof(Point), typeof(Point) });
+
             if (ctor == null) throw new Exception($"No ctor with ({typeof(Point)}, {typeof(Point)}) in {shapeType}");
+            _cache.Add(shapeType, ctor);
 
             return (BaseShape)ctor.Invoke(new object[] { point1, point2 });
         }
