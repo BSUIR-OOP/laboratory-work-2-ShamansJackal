@@ -38,7 +38,7 @@ namespace OOP_lab1
                     Width = 60,
                     Tag = item
                 };
-                btn.Click += Button_Click_1;
+                btn.Click += SelectShape;
                 toolPanel.Children.Add(btn);
             }
 
@@ -65,16 +65,21 @@ namespace OOP_lab1
             else
             {
                 _rigthPoint = new Point(e.GetPosition(Palette));
+
                 BaseShape shape = ShapeFactory.Build((ShapesEnum)_activeBtn.Tag, _rigthPoint, _leftPoint);
                 shape.ColorOutline = new PixelColor(colorBox.Text);
+                shape.LineWidth = int.Parse(widthBox.Text);
+
                 _bitmap.DrawShape(shape);
+
                 _rigthPoint = _leftPoint = null;
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void SelectShape(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
+
             if (_activeBtn != null) _activeBtn.IsEnabled = true;
             _activeBtn = button;
             _activeBtn.IsEnabled = false;            
