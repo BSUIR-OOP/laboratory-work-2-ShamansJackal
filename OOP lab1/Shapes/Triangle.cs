@@ -14,5 +14,15 @@ namespace OOP_lab1.Shapes
                 new BezierCurve(new Point(x3, y3), new Point(x1, y1))
             };
         }
+
+        public Triangle(Point point1, Point point2):
+        this(
+            (int)(point1.X),
+            (int)(point2.Y),
+            (int)(point2.X),
+            (int)(point2.Y),
+            (int)(point1.X - (point1.X-point2.X)/2),
+            (int)(point1.Y)
+        ){ }
     }
 }

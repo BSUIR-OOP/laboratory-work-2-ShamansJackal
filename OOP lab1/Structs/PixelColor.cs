@@ -21,7 +21,7 @@ namespace OOP_lab1.Structs
 
         public PixelColor(string hex)
         {
-            if (hex.Length != 6) throw new Exception();
+            if (hex.Length != 6) hex = "ffffff";
 
             red = byte.Parse(hex[0..2], System.Globalization.NumberStyles.HexNumber);
             green = byte.Parse(hex[2..4], System.Globalization.NumberStyles.HexNumber);

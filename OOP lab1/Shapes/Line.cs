@@ -13,5 +13,13 @@ namespace OOP_lab1.Shapes
                 new BezierCurve(new Point(x1, y1), new Point(x2, y2))
             };
         }
+
+        public Line(Point point1, Point point2)
+        {
+            _curves = new List<BezierCurve>()
+            {
+                new BezierCurve(point1, point2)
+            };
+        }
     }
 }

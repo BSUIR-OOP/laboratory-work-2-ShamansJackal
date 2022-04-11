@@ -22,15 +22,12 @@ namespace OOP_lab1.Shapes
             };
         }
 
-        public Rectangle(Point point1, Point point2)
-        {
-            _curves = new List<BezierCurve>()
-            {
-                new BezierCurve(point1, new Point(point2.X, point1.Y)),
-                new BezierCurve(new Point(point2.X, point1.Y), point2),
-                new BezierCurve(point2, new Point(point1.X, point2.Y)), 
-                new BezierCurve(new Point(point1.X, point2.Y), point1)
-            };
-        }
+        public Rectangle(Point point1, Point point2) :
+        this(
+            (int)(point1.X - (point1.X - point2.X) / 2),
+            (int)(point1.Y - (point1.Y - point2.Y) / 2),
+            (int)Math.Abs(point1.X - point2.X),
+            (int)Math.Abs(point1.Y - point2.Y)
+        ){ }
     }
 }
