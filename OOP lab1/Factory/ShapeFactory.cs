@@ -12,22 +12,19 @@ namespace OOP_lab1.Factory
 {
     public static class ShapeFactory
     {
-        public static IReadOnlyDictionary<ShapesEnum, Type> ShapesDict => _shapesDict;
-
-        private static Dictionary<ShapesEnum, Type> _shapesDict = new Dictionary<ShapesEnum, Type>()
+        private static Dictionary<ShapesEnum, ConstructorInfo?> _shapesDict = new Dictionary<ShapesEnum, ConstructorInfo?>()
         {
-            { ShapesEnum.Circle, typeof(Circle) },
-            { ShapesEnum.Rectangle, typeof(Rectangle) },
-            { ShapesEnum.Triangle, typeof(Triangle) },
-            { ShapesEnum.Squart, typeof(Square) },
-            { ShapesEnum.Elipse, typeof(Elipse) },
-            { ShapesEnum.Heart, typeof(Heart) },
-            { ShapesEnum.Line, typeof(Line) },
+            { ShapesEnum.Circle, typeof(Circle).GetConstructor(new[] { typeof(Point), typeof(Point) }) },
+            { ShapesEnum.Rectangle, typeof(Rectangle).GetConstructor(new[] { typeof(Point), typeof(Point) }) },
+            { ShapesEnum.Triangle, typeof(Triangle).GetConstructor(new[] { typeof(Point), typeof(Point) }) },
+            { ShapesEnum.Squart, typeof(Square).GetConstructor(new[] { typeof(Point), typeof(Point) }) },
+            { ShapesEnum.Elipse, typeof(Elipse).GetConstructor(new[] { typeof(Point), typeof(Point) }) },
+            { ShapesEnum.Heart, typeof(Heart).GetConstructor(new[] { typeof(Point), typeof(Point) }) },
+            { ShapesEnum.Line, typeof(Line).GetConstructor(new[] { typeof(Point), typeof(Point) }) },
         };
         public static BaseShape Build(ShapesEnum shapeType, Point point1, Point point2)
-        {
-            Type type = _shapesDict[shapeType];            
-            ConstructorInfo? ctor = type.GetConstructor(new[] { typeof(Point), typeof(Point) });
+        {         
+            ConstructorInfo? ctor = _shapesDict[shapeType];
             
             if (ctor == null) throw new Exception($"No ctor with ({typeof(Point)}, {typeof(Point)}) in {shapeType}");
 
