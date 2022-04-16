@@ -1,0 +1,21 @@
+﻿<Window x:Class="OOP_lab1.MainWindow"
+        Name="mainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OOP_lab1"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="509" Width="800">
+    <DockPanel Background="AliceBlue" LastChildFill="True">
+        <DockPanel DockPanel.Dock="Top" LastChildFill="True">
+            <TextBox Margin="4" Name="widthBox" MaxLength="6" Text="Pen width" Width="130"/>
+            <TextBox HorizontalAlignment="Stretch" Margin="4" Name="colorBox" MaxLength="6" Text="Color HEX"/>
+        </DockPanel>
+
+        <DockPanel Name="toolPanel" DockPanel.Dock="Top" Height="58">
+        </DockPanel>
+        <Image MouseLeftButtonUp="Palette_MouseLeftButtonUp" Name="Palette" Width="800" Height="388"/>
+    </DockPanel>
+
+</Window>
